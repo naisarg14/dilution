@@ -11,10 +11,16 @@
             background-color: lightgreen;
         }
         .container {
-            max-width: 800px;
+            max-width: 1000px;
         }
         .input-group-text {
             width: 120px;
+        }
+        .result-display {
+            margin-top: 20px;
+        }
+        .result-display div {
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -31,9 +37,9 @@
                     <input type="number" id="v1" class="form-control" placeholder="Enter v1">
                     <div class="input-group-append">
                         <select id="v1Unit" class="form-control">
-                            <option value="microlitre">microlitre</option>
-                            <option value="millilitre">millilitre</option>
-                            <option value="litre">litre</option>
+                            <option value="microlitre">µl</option>
+                            <option value="millilitre">ml</option>
+                            <option value="litre">l</option>
                         </select>
                     </div>
                 </div>
@@ -48,16 +54,20 @@
                     <input type="number" id="v2" class="form-control" placeholder="Enter v2">
                     <div class="input-group-append">
                         <select id="v2Unit" class="form-control">
-                            <option value="microlitre">microlitre</option>
-                            <option value="millilitre">millilitre</option>
-                            <option value="litre">litre</option>
-                        </select>
+                            <option value="microlitre">µl</option>
+                            <option value="millilitre">ml</option>
+                            <option value="litre">l</select>
                     </div>
                 </div>
             </div>
             <div class="col">
                 <button class="btn btn-primary mt-4" onclick="calculate()">Calculate</button>
             </div>
+        </div>
+        <div id="resultDisplay" class="result-display">
+            <div>Result in microlitres (µl): <span id="resultMicrolitre"></span></div>
+            <div>Result in millilitres (ml): <span id="resultMillilitre"></span></div>
+            <div>Result in litres (l): <span id="resultLitre"></span></div>
         </div>
     </div>
 
@@ -100,25 +110,33 @@
 
             let v1InMicrolitres = isNaN(v1) ? NaN : convertToMicrolitre(v1, v1Unit);
             let v2InMicrolitres = isNaN(v2) ? NaN : convertToMicrolitre(v2, v2Unit);
+            let result;
 
             if (!isNaN(m1) && !isNaN(v1InMicrolitres) && !isNaN(m2) && isNaN(v2InMicrolitres)) {
-                let result = (m1 * v1InMicrolitres) / m2;
+                result = (m1 * v1InMicrolitres) / m2;
                 document.getElementById('v2').value = convertFromMicrolitre(result, v2Unit);
                 document.getElementById('v2').classList.add('result');
             } else if (!isNaN(m1) && !isNaN(v1InMicrolitres) && isNaN(m2) && !isNaN(v2InMicrolitres)) {
-                let result = (m1 * v1InMicrolitres) / v2InMicrolitres;
+                result = (m1 * v1InMicrolitres) / v2InMicrolitres;
                 document.getElementById('m2').value = result;
                 document.getElementById('m2').classList.add('result');
             } else if (!isNaN(m1) && isNaN(v1InMicrolitres) && !isNaN(m2) && !isNaN(v2InMicrolitres)) {
-                let result = (m2 * v2InMicrolitres) / m1;
+                result = (m2 * v2InMicrolitres) / m1;
                 document.getElementById('v1').value = convertFromMicrolitre(result, v1Unit);
                 document.getElementById('v1').classList.add('result');
             } else if (isNaN(m1) && !isNaN(v1InMicrolitres) && !isNaN(m2) && !isNaN(v2InMicrolitres)) {
-                let result = (m2 * v2InMicrolitres) / v1InMicrolitres;
+                result = (m2 * v2InMicrolitres) / v1InMicrolitres;
                 document.getElementById('m1').value = result;
                 document.getElementById('m1').classList.add('result');
             } else {
                 alert('Please enter exactly three values.');
+                return;
+            }
+
+            if (!isNaN(result)) {
+                document.getElementById('resultMicrolitre').textContent = result.toFixed(2);
+                document.getElementById('resultMillilitre').textContent = (result / 1000).toFixed(2);
+                document.getElementById('resultLitre').textContent = (result / 1000000).toFixed(2);
             }
         }
     </script>
