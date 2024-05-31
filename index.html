@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equation Solver</title>
+    <title>Equation Solver with Units</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .result {
             background-color: lightgreen;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .input-group-text {
+            width: 120px;
         }
     </style>
 </head>
@@ -21,7 +27,16 @@
             </div>
             <div class="col">
                 <label for="v1">v1:</label>
-                <input type="number" id="v1" class="form-control" placeholder="Enter v1">
+                <div class="input-group">
+                    <input type="number" id="v1" class="form-control" placeholder="Enter v1">
+                    <div class="input-group-append">
+                        <select id="v1Unit" class="form-control">
+                            <option value="microlitre">microlitre</option>
+                            <option value="millilitre">millilitre</option>
+                            <option value="litre">litre</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <label for="m2">m2:</label>
@@ -29,7 +44,16 @@
             </div>
             <div class="col">
                 <label for="v2">v2:</label>
-                <input type="number" id="v2" class="form-control" placeholder="Enter v2">
+                <div class="input-group">
+                    <input type="number" id="v2" class="form-control" placeholder="Enter v2">
+                    <div class="input-group-append">
+                        <select id="v2Unit" class="form-control">
+                            <option value="microlitre">microlitre</option>
+                            <option value="millilitre">millilitre</option>
+                            <option value="litre">litre</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <button class="btn btn-primary mt-4" onclick="calculate()">Calculate</button>
@@ -38,11 +62,35 @@
     </div>
 
     <script>
+        function convertToMicrolitre(value, unit) {
+            switch (unit) {
+                case 'millilitre':
+                    return value * 1000;
+                case 'litre':
+                    return value * 1000000;
+                default:
+                    return value;
+            }
+        }
+
+        function convertFromMicrolitre(value, unit) {
+            switch (unit) {
+                case 'millilitre':
+                    return value / 1000;
+                case 'litre':
+                    return value / 1000000;
+                default:
+                    return value;
+            }
+        }
+
         function calculate() {
             const m1 = parseFloat(document.getElementById('m1').value);
             const v1 = parseFloat(document.getElementById('v1').value);
             const m2 = parseFloat(document.getElementById('m2').value);
             const v2 = parseFloat(document.getElementById('v2').value);
+            const v1Unit = document.getElementById('v1Unit').value;
+            const v2Unit = document.getElementById('v2Unit').value;
 
             // Remove result class from all inputs
             document.getElementById('m1').classList.remove('result');
@@ -50,17 +98,24 @@
             document.getElementById('m2').classList.remove('result');
             document.getElementById('v2').classList.remove('result');
 
-            if (!isNaN(m1) && !isNaN(v1) && !isNaN(m2) && isNaN(v2)) {
-                document.getElementById('v2').value = (m1 * v1) / m2;
+            let v1InMicrolitres = isNaN(v1) ? NaN : convertToMicrolitre(v1, v1Unit);
+            let v2InMicrolitres = isNaN(v2) ? NaN : convertToMicrolitre(v2, v2Unit);
+
+            if (!isNaN(m1) && !isNaN(v1InMicrolitres) && !isNaN(m2) && isNaN(v2InMicrolitres)) {
+                let result = (m1 * v1InMicrolitres) / m2;
+                document.getElementById('v2').value = convertFromMicrolitre(result, v2Unit);
                 document.getElementById('v2').classList.add('result');
-            } else if (!isNaN(m1) && !isNaN(v1) && isNaN(m2) && !isNaN(v2)) {
-                document.getElementById('m2').value = (m1 * v1) / v2;
+            } else if (!isNaN(m1) && !isNaN(v1InMicrolitres) && isNaN(m2) && !isNaN(v2InMicrolitres)) {
+                let result = (m1 * v1InMicrolitres) / v2InMicrolitres;
+                document.getElementById('m2').value = result;
                 document.getElementById('m2').classList.add('result');
-            } else if (!isNaN(m1) && isNaN(v1) && !isNaN(m2) && !isNaN(v2)) {
-                document.getElementById('v1').value = (m2 * v2) / m1;
+            } else if (!isNaN(m1) && isNaN(v1InMicrolitres) && !isNaN(m2) && !isNaN(v2InMicrolitres)) {
+                let result = (m2 * v2InMicrolitres) / m1;
+                document.getElementById('v1').value = convertFromMicrolitre(result, v1Unit);
                 document.getElementById('v1').classList.add('result');
-            } else if (isNaN(m1) && !isNaN(v1) && !isNaN(m2) && !isNaN(v2)) {
-                document.getElementById('m1').value = (m2 * v2) / v1;
+            } else if (isNaN(m1) && !isNaN(v1InMicrolitres) && !isNaN(m2) && !isNaN(v2InMicrolitres)) {
+                let result = (m2 * v2InMicrolitres) / v1InMicrolitres;
+                document.getElementById('m1').value = result;
                 document.getElementById('m1').classList.add('result');
             } else {
                 alert('Please enter exactly three values.');
