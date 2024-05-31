@@ -22,15 +22,20 @@
         .result-display div {
             margin-bottom: 10px;
         }
+        .symbol {
+            font-size: 1.5em;
+            margin-top: 0.5em;
+        }
     </style>
 </head>
 <body>
     <div class="container mt-5">
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col">
                 <label for="m1">m1:</label>
                 <input type="number" id="m1" class="form-control" placeholder="Enter m1">
             </div>
+            <div class="col symbol">×</div>
             <div class="col">
                 <label for="v1">v1:</label>
                 <div class="input-group">
@@ -44,10 +49,12 @@
                     </div>
                 </div>
             </div>
+            <div class="col symbol">=</div>
             <div class="col">
                 <label for="m2">m2:</label>
                 <input type="number" id="m2" class="form-control" placeholder="Enter m2">
             </div>
+            <div class="col symbol">×</div>
             <div class="col">
                 <label for="v2">v2:</label>
                 <div class="input-group">
@@ -56,7 +63,8 @@
                         <select id="v2Unit" class="form-control">
                             <option value="microlitre">µl</option>
                             <option value="millilitre">ml</option>
-                            <option value="litre">l</select>
+                            <option value="litre">l</option>
+                        </select>
                     </div>
                 </div>
             </div>
