@@ -123,19 +123,19 @@
 
             if (!isNaN(N1) && !isNaN(V1InMicrolitres) && !isNaN(N2) && isNaN(V2InMicrolitres)) {
                 result = (N1 * V1InMicrolitres) / N2;
-                document.getElementById('V2').value = convertFromMicrolitre(result, V2Unit);
+                document.getElementById('V2').value = convertFromMicrolitre(result, V2Unit).toFixed(4);
                 document.getElementById('V2').classList.add('result');
             } else if (!isNaN(N1) && !isNaN(V1InMicrolitres) && isNaN(N2) && !isNaN(V2InMicrolitres)) {
                 result = (N1 * V1InMicrolitres) / V2InMicrolitres;
-                document.getElementById('N2').value = result;
+                document.getElementById('N2').value = result.toFixed(4);
                 document.getElementById('N2').classList.add('result');
             } else if (!isNaN(N1) && isNaN(V1InMicrolitres) && !isNaN(N2) && !isNaN(V2InMicrolitres)) {
                 result = (N2 * V2InMicrolitres) / N1;
-                document.getElementById('V1').value = convertFromMicrolitre(result, V1Unit);
+                document.getElementById('V1').value = convertFromMicrolitre(result, V1Unit).toFixed(4);
                 document.getElementById('V1').classList.add('result');
             } else if (isNaN(N1) && !isNaN(V1InMicrolitres) && !isNaN(N2) && !isNaN(V2InMicrolitres)) {
                 result = (N2 * V2InMicrolitres) / V1InMicrolitres;
-                document.getElementById('N1').value = result;
+                document.getElementById('N1').value = result.toFixed(4);
                 document.getElementById('N1').classList.add('result');
             } else {
                 alert('Please enter exactly three values.');
@@ -143,9 +143,9 @@
             }
 
             if (!isNaN(result)) {
-                document.getElementById('resultMicrolitre').textContent = result.toFixed(2);
-                document.getElementById('resultMillilitre').textContent = (result / 1000).toFixed(2);
-                document.getElementById('resultLitre').textContent = (result / 1000000).toFixed(2);
+                document.getElementById('resultMicrolitre').textContent = result.toFixed(4);
+                document.getElementById('resultMillilitre').textContent = (result / 1000).toFixed(4);
+                document.getElementById('resultLitre').textContent = (result / 1000000).toFixed(4);
             }
         }
     </script>
