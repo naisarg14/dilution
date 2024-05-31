@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equation Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            margin: auto;
+        }
+        .container input {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .container button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label for="m1">m1:</label>
+        <input type="number" id="m1" placeholder="Enter m1">
+        <label for="v1">v1:</label>
+        <input type="number" id="v1" placeholder="Enter v1">
+        <label for="m2">m2:</label>
+        <input type="number" id="m2" placeholder="Enter m2">
+        <label for="v2">v2:</label>
+        <input type="number" id="v2" placeholder="Enter v2">
+        <button onclick="calculate()">Calculate</button>
+    </div>
+
+    <script>
+        function calculate() {
+            const m1 = parseFloat(document.getElementById('m1').value);
+            const v1 = parseFloat(document.getElementById('v1').value);
+            const m2 = parseFloat(document.getElementById('m2').value);
+            const v2 = parseFloat(document.getElementById('v2').value);
+
+            if (!isNaN(m1) && !isNaN(v1) && !isNaN(m2) && isNaN(v2)) {
+                document.getElementById('v2').value = (m1 * v1) / m2;
+            } else if (!isNaN(m1) && !isNaN(v1) && isNaN(m2) && !isNaN(v2)) {
+                document.getElementById('m2').value = (m1 * v1) / v2;
+            } else if (!isNaN(m1) && isNaN(v1) && !isNaN(m2) && !isNaN(v2)) {
+                document.getElementById('v1').value = (m2 * v2) / m1;
+            } else if (isNaN(m1) && !isNaN(v1) && !isNaN(m2) && !isNaN(v2)) {
+                document.getElementById('m1').value = (m2 * v2) / v1;
+            } else {
+                alert('Please enter exactly three values.');
+            }
+        }
+    </script>
+</body>
+</html>
